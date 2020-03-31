@@ -40,6 +40,8 @@ type
     dsCompromisso: TDataSource;
     dsPesquisaCompromisso: TDataSource;
     tmrAlerta: TTimer;
+    traySIstema: TTrayIcon;
+    sbtTray: TSpeedButton;
     procedure btnAdicionarClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
     procedure btnTransferirClick(Sender: TObject);
@@ -55,6 +57,8 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure tmrAlertaTimer(Sender: TObject);
+    procedure sbtTrayClick(Sender: TObject);
+    procedure traySIstemaDblClick(Sender: TObject);
   private
     { Private declarations }
     var
@@ -80,7 +84,7 @@ implementation
 
 {$R *.dfm}
 
-uses uCompromisso, uDM, uRelAgendas;
+uses uCompromisso, uDM, uRelAgendas, uLembrete;
 
 procedure TfrmMain.btnAdicionarClick(Sender: TObject);
 begin
@@ -210,6 +214,17 @@ begin
    end;
 end;
 
+procedure TfrmMain.sbtTrayClick(Sender: TObject);
+begin
+  with traySIstema do
+  begin
+    Hint    := 'Restaurar Agenda de Compromissos';
+    Visible := True;
+  end;
+
+  frmMain.Hide;
+end;
+
 procedure TfrmMain.tmrAlertaTimer(Sender: TObject);
 var
   cDtAgenda : string;
@@ -232,32 +247,49 @@ begin
 
       if cHoraAlerta = cHoraAtual then
       begin
+      {
         cDtAgenda     := DateToStr(DM.qryAlertas.FieldByName('DTAGENDA').AsDateTime);
-        cHoraAgenda   := TimeToStr(DM.qryAlertas.FieldByName('HORA').AsDateTime);
+        cHoraAgenda   := FormatDateTime('hh:mm', DM.qryAlertas.FieldByName('HORA').AsDateTime);
         cCompromisso  := DM.qryAlertas.FieldByName('COMPROMISSO').AsString;
 
         cTitulo       := DM.qryAlertas.FieldByName('TITULO').AsString;
 
         cMsg          := cDtAgenda + ' ' + cHoraAgenda + CHR(13) + cCompromisso;
-
+       }
         tmrAlerta.Enabled := False;
 
-        if Application.MessageBox(PWideChar(cMsg), PWideChar(cTitulo), MB_ICONINFORMATION + MB_OK + MB_SYSTEMMODAL) = mrOk then
+        frmLembrete := TfrmLembrete.Create(nil);
+
+        frmLembrete.edtTitulo.Text    := DM.qryAlertas.FieldByName('TITULO').AsString;
+        frmLembrete.memTexto.Text     := DM.qryAlertas.FieldByName('COMPROMISSO').AsString;
+        frmLembrete.dtpData.DateTime  := DM.qryAlertas.FieldByName('DTAGENDA').AsDateTime;
+        frmLembrete.tipHora.Time      := DM.qryAlertas.FieldByName('HORA').AsDateTime;
+
+        frmLembrete.ShowModal;
+
+        FreeAndNil(frmLembrete);
+
+        if frmLembrete = nil then
         begin
           listaParaAlerta;
 
-          tmrAlerta.Enabled := True;
-
-          if DM.qryAlertas.RecordCount = 0 then
-          begin
-            tmrAlerta.Enabled := False;
-          end;
+          tmrAlerta.Enabled := (not DM.qryAlertas.RecordCount = 0);
         end;
       end;
     end;
 
     DM.qryAlertas.Next;
   end;
+end;
+
+procedure TfrmMain.traySIstemaDblClick(Sender: TObject);
+begin
+  with traySIstema do
+  begin
+    Visible := False;
+  end;
+
+  frmMain.Show;
 end;
 
 procedure TfrmMain.listaAtrasados;

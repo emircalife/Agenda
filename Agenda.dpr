@@ -5,7 +5,8 @@ uses
   uMain in 'uMain.pas' {frmMain},
   uCompromisso in 'uCompromisso.pas' {frmCompromisso},
   uDM in 'uDM.pas' {DM: TDataModule},
-  uRelAgendas in 'uRelAgendas.pas' {frmRelAgendas};
+  uRelAgendas in 'uRelAgendas.pas' {frmRelAgendas},
+  uLembrete in 'uLembrete.pas' {frmLembrete};
 
 {$R *.res}
 

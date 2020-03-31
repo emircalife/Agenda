@@ -77,6 +77,8 @@ begin
       end;
     end;
   end;
+
+  close;
 end;
 
 procedure TfrmCompromisso.FormShow(Sender: TObject);
