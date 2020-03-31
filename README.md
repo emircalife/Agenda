@@ -1,7 +1,7 @@
 # Agenda
 Sistema de Agenda Pessoal e Lembrete em Delphi Rio
 
-Somente utilizei componentes nativos.
+Utilizei somente componentes nativos.
 
 Ajustes pendentes:
 
