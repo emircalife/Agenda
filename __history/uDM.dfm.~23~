@@ -1,0 +1,95 @@
+object DM: TDM
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 340
+  Width = 435
+  object qryManutencao: TFDQuery
+    Left = 168
+    Top = 16
+  end
+  object qryAtrasados: TFDQuery
+    Left = 168
+    Top = 72
+  end
+  object qryConsultaCompromissos: TFDQuery
+    AfterScroll = qryConsultaCompromissosAfterScroll
+    Left = 168
+    Top = 192
+    object qryConsultaCompromissosIDAGENDA: TIntegerField
+      FieldName = 'IDAGENDA'
+      Origin = 'IDAGENDA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryConsultaCompromissosTITULO: TStringField
+      FieldName = 'TITULO'
+      Origin = 'TITULO'
+      Required = True
+      Size = 254
+    end
+    object qryConsultaCompromissosDTAGENDA: TDateField
+      FieldName = 'DTAGENDA'
+      Origin = 'DTAGENDA'
+      Required = True
+    end
+    object qryConsultaCompromissosHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = 'HORA'
+      Required = True
+    end
+    object qryConsultaCompromissosCOMPROMISSO: TStringField
+      FieldName = 'COMPROMISSO'
+      Origin = 'COMPROMISSO'
+      Required = True
+      Size = 254
+    end
+    object qryConsultaCompromissosCONCLUIDO: TBooleanField
+      FieldName = 'CONCLUIDO'
+      Origin = 'CONCLUIDO'
+      Required = True
+      DisplayValues = 'SIM;N'#195'O'
+    end
+  end
+  object qryCompromissos: TFDQuery
+    AfterScroll = qryCompromissosAfterScroll
+    SQL.Strings = (
+      'SELECT * FROM AGENDA')
+    Left = 168
+    Top = 128
+    object qryCompromissosIDAGENDA: TIntegerField
+      FieldName = 'IDAGENDA'
+      Origin = 'IDAGENDA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object qryCompromissosTITULO: TStringField
+      FieldName = 'TITULO'
+      Origin = 'TITULO'
+      Required = True
+      Size = 254
+    end
+    object qryCompromissosDTAGENDA: TDateField
+      FieldName = 'DTAGENDA'
+      Origin = 'DTAGENDA'
+      Required = True
+    end
+    object qryCompromissosHORA: TTimeField
+      FieldName = 'HORA'
+      Origin = 'HORA'
+      Required = True
+    end
+    object qryCompromissosCOMPROMISSO: TStringField
+      FieldName = 'COMPROMISSO'
+      Origin = 'COMPROMISSO'
+      Required = True
+      Size = 254
+    end
+    object qryCompromissosCONCLUIDO: TBooleanField
+      FieldName = 'CONCLUIDO'
+      Origin = 'CONCLUIDO'
+      Required = True
+      DisplayValues = 'SIM;N'#195'O'
+    end
+  end
+end
